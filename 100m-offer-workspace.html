@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рабочее пространство: Оффер на $100M</title>
+    <style>
+        /* Базовые светлые стили (Light Mode) */
+        :root {
+            --bg-color: #f8fafc;
+            --text-color: #0f172a;
+            --accent-green: #16a34a;
+            --accent-border: #cbd5e1;
+            --container-bg: #ffffff;
+            --builder-bg: #f1f5f9;
+            --input-bg: #ffffff;
+            --placeholder-color: #94a3b8;
+            --button-bg: #0f172a;
+            --button-text: #ffffff;
+            --button-hover: #334155;
+            --divider: #e2e8f0;
+        }
+
+        /* Темная тема (Dark Mode) */
+        body.dark-mode {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --accent-green: #22c55e;
+            --accent-border: #334155;
+            --container-bg: #1e293b;
+            --builder-bg: #0f172a;
+            --input-bg: #1e293b;
+            --placeholder-color: #64748b;
+            --button-bg: #f8fafc;
+            --button-text: #0f172a;
+            --button-hover: #cbd5e1;
+            --divider: #334155;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            margin: 0; 
+            padding: 40px 20px; 
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: var(--container-bg); 
+            padding: 50px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            border-radius: 12px; 
+            border: 1px solid var(--divider);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        /* Шапка с кнопками */
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 4px solid var(--text-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        h1, h2, h3 { 
+            font-weight: 900; 
+            letter-spacing: -0.5px;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        h1 { 
+            font-size: 2.5rem; 
+            text-transform: uppercase; 
+            white-space: nowrap; /* Предотвращает перенос слов заголовочной строки при смене шрифтов/тем */
+        }
+        
+        .controls-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+        }
+
+        h2 { font-size: 1.8rem; margin-top: 2rem; display: flex; align-items: center; gap: 10px; }
+        h2::before { content: ""; display: block; width: 6px; height: 1.8rem; background-color: var(--accent-green); }
+        h3 { font-size: 1.3rem; margin-top: 20px; }
+        
+        .highlight { color: var(--accent-green); }
+        
+        ul { padding-left: 20px; }
+        li { margin-bottom: 12px; font-size: 1.1rem; }
+
+        .section { margin-bottom: 50px; }
+
+        /* Памятка */
+        #memoSection {
+            display: none; /* Скрыто по умолчанию */
+            padding-bottom: 40px;
+            border-bottom: 2px dashed var(--accent-border);
+            margin-bottom: 40px;
+        }
+
+        /* Стили для конструктора */
+        .builder-section {
+            background: var(--builder-bg);
+            border: 2px dashed var(--accent-border);
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-top: 20px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .formula-display {
+            text-align: center;
+            margin: 0 0 40px 0;
+            padding: 20px;
+            background: var(--container-bg);
+            border: 1px solid var(--accent-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: background-color 0.3s;
+        }
+
+        .formula-interactive {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .fraction-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .fraction-line {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-color);
+            border-radius: 2px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        input[type="text"], textarea {
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            padding: 12px 16px;
+            border: 2px solid var(--accent-border);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+        input[type="text"] { width: 300px; text-align: center; }
+        
+        input:focus, textarea:focus {
+            border-color: var(--accent-green);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+        }
+
+        ::placeholder { color: var(--placeholder-color); font-weight: 500; }
+
+        .operator { font-size: 1.5rem; font-weight: 900; color: var(--accent-green); }
+        .value-label { font-size: 2.2rem; font-weight: 900; color: var(--accent-green); }
+
+        /* Блок 4 вопросов */
+        .questions-block {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid var(--accent-border);
+        }
+
+        .question-item {
+            margin-bottom: 25px;
+        }
+
+        .question-item label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .question-item label .number {
+            background-color: var(--accent-green);
+            color: #fff;
+            min-width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-top: 2px;
+        }
+
+        .question-item textarea {
+            width: 100%;
+            height: 80px;
+            resize: vertical;
+        }
+
+        /* Итоговая формулировка (вынесена отдельно и теперь находится над вопросами) */
+        .draft-section {
+            background: var(--container-bg);
+            border: 2px solid var(--accent-green);
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .draft-section h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+        .draft-section h2::before {
+            display: none;
+        }
+
+        .draft-section textarea { 
+            width: 100%; 
+            height: 120px; 
+            resize: vertical; 
+            font-size: 1.1rem; 
+            margin-top: 15px; 
+        }
+
+        /* Футер с кнопкой B&G */
+        .footer-action {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--divider);
+        }
+
+        .agency-btn {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--text-color);
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .agency-btn:hover {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .input-row { flex-direction: column; }
+            input[type="text"] { width: 100%; }
+            .formula-interactive { flex-direction: column; text-align: center; }
+            .operator { transform: rotate(90deg); margin: 5px 0; display: inline-block;}
+            .input-row .operator { transform: none; }
+            .header-controls { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .controls-group { width: 100%; justify-content: space-between; }
+            h1 { white-space: normal; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Шапка -->
+        <div class="header-controls">
+            <div>
+                <h1>$100M Offer <span class="highlight">Workspace</span></h1>
+                <p style="font-size: 1.1rem; color: var(--placeholder-color); margin: 5px 0 0 0;">Рабочее пространство идеального предложения</p>
+            </div>
+            <div class="controls-group">
+                <button id="themeToggleBtn" onclick="toggleTheme()">🌙 Темная тема</button>
+                <button id="memoToggleBtn" onclick="toggleMemo()">📖 Открыть памятку</button>
+            </div>
+        </div>
+
+        <!-- ПАМЯТКА (Скрыта по умолчанию) -->
+        <div id="memoSection">
+            <div class="section">
+                <h2>Главные цитаты и принципы (Майндсет)</h2>
+                <ul>
+                    <li><strong>Главное правило оффера:</strong> «Сделай людям настолько хороший оффер, что они будут чувствовать себя идиотами, если откажутся».</li>
+                    <li><strong>Правило ценообразования:</strong> «Озвучивайте такую высокую цену, которую вы можете произнести вслух без улыбки».</li>
+                    <li><strong>Оценка рынка:</strong> Самое главное конкурентное преимущество в бизнесе — это «Голодная толпа».</li>
+                    <li><strong>Иерархия успеха:</strong> Голодная толпа (рынок) важнее, чем сила оффера, а сила оффера важнее, чем навыки убеждения.</li>
+                    <li><strong>Причина покупки:</strong> Люди покупают, когда верят, что получаемая ими ценность превышает ту цену, которую они платят.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Концепция «Оффера Большого шлема»</h2>
+                <ul>
+                    <li>Чтобы выйти из конкурентной борьбы и не снижать цены, ваш оффер должен стать «Оффером Большого шлема».</li>
+                    <li>Он переводит ваш продукт из категории товаров широкого потребления (где конкурируют ценой) в «категорию одного» (где конкурируют ценностью).</li>
+                    <li>Он делает ваш продукт несравнимым ни с какими другими доступными товарами или услугами на рынке.</li>
+                    <li>Он состоит из правильного сочетания стратегий цены, ценности, гарантий и нейминга.</li>
+                    <li>Он включает в себя привлекательную промоакцию, непревзойденное ценовое предложение, премиальную цену и железобетонную денежную гарантию.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Чек-листы создания</h2>
+                
+                <h3 style="margin-top: 25px;">№1: Выбор правильного рынка («Голодная толпа»)</h3>
+                <p>Прежде чем делать оффер, убедитесь, что ваша аудитория соответствует 4 критериям:</p>
+                <ul>
+                    <li><strong>Сильная боль:</strong> Люди должны отчаянно нуждаться в вашем решении.</li>
+                    <li><strong>Покупательская способность:</strong> У аудитории должны быть деньги.</li>
+                    <li><strong>Легко нацелиться:</strong> Вы должны иметь возможность легко находить этих людей.</li>
+                    <li><strong>Потенциал роста:</strong> Рынок должен быть растущим.</li>
+                </ul>
+
+                <h3 style="margin-top: 25px;">№2: Нишевание и Ценообразование</h3>
+                <ul>
+                    <li><strong>Сужайте нишу:</strong> Продажа продукта узкоспециализированной аудитории позволяет брать за него в 100 раз больше денег.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- КОНСТРУКТОР (Открыт по умолчанию) -->
+        <div id="constructorSection" class="section">
+            
+            <div class="formula-display">
+                <span class="value-label">Ценность = </span>
+                <div style="display: inline-block; vertical-align: middle; margin-left: 15px; text-align: center; font-size: 1.4rem; font-weight: bold;">
+                    <div>Размер изменений &nbsp;<span class="highlight">x</span>&nbsp; Вероятность</div>
+                    <div style="width: 100%; height: 3px; background-color: var(--text-color); margin: 10px 0; border-radius: 2px;"></div>
+                    <div>Время &nbsp;<span class="highlight">+</span>&nbsp; Усилия</div>
+                </div>
+            </div>
+            
+            <div class="builder-section">
+                <h2 style="margin-top: 0;">Конструктор Оффера</h2>
+                <p style="margin-bottom: 30px;">Заполните переменные уравнения ценности ниже.</p>
+                
+                <div class="formula-interactive">
+                    <div class="value-label">Ценность = </div>
+                    <div class="fraction-container">
+                        <!-- Числитель -->
+                        <div class="input-row">
+                            <input type="text" placeholder="Размер изменений (Что получат?)">
+                            <span class="operator">x</span>
+                            <input type="text" placeholder="Вероятность (Как докажете?)">
+                        </div>
+                        <!-- Линия дроби -->
+                        <div class="fraction-line"></div>
+                        <!-- Знаменатель -->
+                        <div class="input-row">
+                            <input type="text" placeholder="Время (Как быстро?)">
+                            <span class="operator">+</span>
+                            <input type="text" placeholder="Усилия (Что нужно сделать?)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ИТОГОВАЯ ФОРМУЛИРОВКА (Теперь перенесена НАД блоком из 4 вопросов) -->
+                <div class="draft-section">
+                    <h2 style="color: var(--accent-green);">Итоговая формулировка оффера</h2>
+                    <textarea placeholder="Я помогу [кому] достичь [размер изменений] за [время] без [усилия], а гарантирует это [вероятность]..."></textarea>
+                </div>
+
+                <!-- БЛОК С 4 ВОПРОСАМИ -->
+                <div class="questions-block">
+                    <h3 style="margin-bottom: 20px;">Проработка элементов (4 вопроса)</h3>
+                    
+                    <div class="question-item">
+                        <label><span class="number">1</span> Как увеличить субъективное восприятие размера изменений?</label>
+                        <textarea placeholder="Ваш ответ..."></textarea>
+                    </div>
+                    
+                    <div class="question-item">
+                        <label><span class="number">2</span> Как увеличить реальную вероятность достижения результата и ее субъективное восприятие клиентом?</label>
+                        <textarea placeholder="Ваш ответ..."></textarea>
+                    </div>
+
+                    <div class="question-item">
+                        <label><span class="number">3</span> Как сократить время клиента до первых результатов?</label>
+                        <textarea placeholder="Ваш ответ..."></textarea>
+                    </div>
+
+                    <div class="question-item">
+                        <label><span class="number">4</span> Как сократить реальные усилия клиента и его субъективное восприятие количества усилий?</label>
+                        <textarea placeholder="Ваш ответ..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Подвал с кнопкой B&G Agency -->
+        <div class="footer-action">
+            <a href="https://bg-agency-usa.vercel.app/" target="_blank" class="agency-btn">
+                B&G AGENCY
+            </a>
+        </div>
+        
+    </div>
+
+    <script>
+        // Функция переключения памятки
+        function toggleMemo() {
+            const memo = document.getElementById('memoSection');
+            const btn = document.getElementById('memoToggleBtn');
+            if (memo.style.display === 'none' || memo.style.display === '') {
+                memo.style.display = 'block';
+                btn.textContent = '📖 Скрыть памятку';
+            } else {
+                memo.style.display = 'none';
+                btn.textContent = '📖 Открыть памятку';
+            }
+        }
+
+        // Функция переключения темной темы
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeToggleBtn');
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                btn.textContent = '☀️ Светлая тема';
+            } else {
+                btn.textContent = '🌙 Темная тема';
+            }
+        }
+    </script>
+</body>
+</html>
