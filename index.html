@@ -5,24 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Рабочее пространство: Оффер на $100M</title>
     <style>
-        /* Базовые светлые стили (Light Mode) */
+        /* Базовые темные стили (Dark Mode - теперь по умолчанию) */
         :root {
-            --bg-color: #f8fafc;
-            --text-color: #0f172a;
-            --accent-green: #16a34a;
-            --accent-border: #cbd5e1;
-            --container-bg: #ffffff;
-            --builder-bg: #f1f5f9;
-            --input-bg: #ffffff;
-            --placeholder-color: #94a3b8;
-            --button-bg: #0f172a;
-            --button-text: #ffffff;
-            --button-hover: #334155;
-            --divider: #e2e8f0;
-        }
-
-        /* Темная тема (Dark Mode) */
-        body.dark-mode {
             --bg-color: #0f172a;
             --text-color: #f8fafc;
             --accent-green: #22c55e;
@@ -35,6 +19,22 @@
             --button-text: #0f172a;
             --button-hover: #cbd5e1;
             --divider: #334155;
+        }
+
+        /* Светлая тема (Light Mode) */
+        body.light-mode {
+            --bg-color: #f8fafc;
+            --text-color: #0f172a;
+            --accent-green: #16a34a;
+            --accent-border: #cbd5e1;
+            --container-bg: #ffffff;
+            --builder-bg: #f1f5f9;
+            --input-bg: #ffffff;
+            --placeholder-color: #94a3b8;
+            --button-bg: #0f172a;
+            --button-text: #ffffff;
+            --button-hover: #334155;
+            --divider: #e2e8f0;
         }
 
         * {
@@ -409,7 +409,8 @@
                 <p style="font-size: 1.1rem; color: var(--placeholder-color); margin: 5px 0 0 0;">Рабочее пространство идеального предложения</p>
             </div>
             <div class="controls-group">
-                <button id="themeToggleBtn" onclick="toggleTheme()">🌙 Темная тема</button>
+                <!-- Кнопка теперь изначально предлагает включить светлую тему -->
+                <button id="themeToggleBtn" onclick="toggleTheme()">☀️ Светлая тема</button>
                 <button id="memoToggleBtn" onclick="toggleMemo()">📖 Открыть памятку</button>
             </div>
         </div>
@@ -550,16 +551,18 @@
             }
         }
 
-        // Функция переключения темной темы
+        // Обновленная функция переключения темы
         function toggleTheme() {
             const body = document.body;
             const btn = document.getElementById('themeToggleBtn');
-            body.classList.toggle('dark-mode');
             
-            if (body.classList.contains('dark-mode')) {
-                btn.textContent = '☀️ Светлая тема';
-            } else {
+            // Теперь мы переключаем класс 'light-mode'
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
                 btn.textContent = '🌙 Темная тема';
+            } else {
+                btn.textContent = '☀️ Светлая тема';
             }
         }
     </script>
