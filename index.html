@@ -70,7 +70,9 @@
         .header-controls {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 20px; 
             border-bottom: 4px solid var(--text-color);
             padding-bottom: 15px;
             margin-bottom: 30px;
@@ -92,6 +94,7 @@
         .controls-group {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap; 
         }
 
         button {
@@ -194,7 +197,7 @@
             justify-content: center;
         }
 
-        /* Оптимизация инпутов для мобильных (шрифт 16px предотвращает зум на iOS) */
+        /* Оптимизация инпутов для мобильных */
         input[type="text"], textarea {
             background-color: var(--input-bg);
             color: var(--text-color);
@@ -337,18 +340,18 @@
 
             h1 { 
                 font-size: 2rem; 
-                white-space: normal; /* Разрешаем перенос заголовка */
+                white-space: normal; 
                 line-height: 1.1;
             }
             
             .controls-group { 
                 width: 100%; 
-                flex-direction: column; /* Кнопки друг под другом */
+                flex-direction: column; 
                 gap: 12px; 
             }
 
             button {
-                width: 100%; /* Кнопки на всю ширину */
+                width: 100%; 
             }
 
             .builder-section {
@@ -373,7 +376,7 @@
             }
 
             input[type="text"] { 
-                max-width: 100%; /* Инпуты на всю ширину внутри дроби */
+                max-width: 100%; 
             }
             
             .operator { 
@@ -381,7 +384,7 @@
             }
 
             .input-row .operator { 
-                transform: rotate(90deg); /* Поворачиваем знак умножения/сложения на мобильных */
+                transform: rotate(90deg); 
             }
 
             .draft-section {
