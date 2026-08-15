@@ -149,7 +149,7 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 15px;
-            margin: 0 0 40px 0;
+            margin: 0 0 20px 0;
             padding: 20px;
             background: var(--container-bg);
             border: 1px solid var(--accent-border);
@@ -197,7 +197,7 @@
             justify-content: center;
         }
 
-        /* Общие стили для ВСЕХ полей ввода (теперь это textarea для авторасширения) */
+        /* Общие стили для полей ввода (textarea для авторасширения) */
         textarea {
             background-color: var(--input-bg);
             color: var(--text-color);
@@ -208,8 +208,8 @@
             font-family: inherit;
             transition: border-color 0.2s, box-shadow 0.2s;
             width: 100%;
-            resize: none; /* Убираем ползунок ручного изменения размера */
-            overflow: hidden; /* Скрываем скроллбар */
+            resize: none; 
+            overflow: hidden; 
         }
         
         textarea:focus {
@@ -220,11 +220,10 @@
 
         ::placeholder { color: var(--placeholder-color); font-weight: 500; }
 
-        /* Специфичные настройки для полей формулы */
         .formula-input { 
             max-width: 300px; 
             text-align: center; 
-            min-height: 54px; /* Начальная высота для 1 строки */
+            min-height: 54px; 
         }
 
         .operator { font-size: 1.5rem; font-weight: 900; color: var(--accent-green); flex-shrink: 0; }
@@ -291,7 +290,7 @@
             margin-top: 15px; 
         }
 
-        /* Футер с кнопкой B&G */
+        /* Футер с текстом и кнопкой B&G */
         .footer-action {
             text-align: center;
             margin-top: 60px;
@@ -378,7 +377,7 @@
             }
 
             .formula-input { 
-                max-width: 100%; /* На мобилках поля тянутся на всю ширину */
+                max-width: 100%; 
             }
             
             .operator { 
@@ -471,6 +470,11 @@
                 </div>
             </div>
             
+            <!-- Подпись автора методологии -->
+            <div style="text-align: center; margin-bottom: 35px; font-size: 0.95rem; color: var(--placeholder-color); font-weight: 500;">
+                Автор методологии и формулы: <span style="color: var(--text-color); font-weight: 700;">Алекс Хормози</span> («$100M Offers»)
+            </div>
+            
             <div class="builder-section">
                 <h2 style="margin-top: 0;">Конструктор Оффера</h2>
                 <p style="margin-bottom: 30px;">Заполните переменные уравнения ценности ниже.</p>
@@ -529,8 +533,11 @@
 
         </div>
 
-        <!-- Подвал с кнопкой B&G Agency -->
+        <!-- Подвал с текстом и кнопкой B&G Agency -->
         <div class="footer-action">
+            <p style="margin: 0 0 15px 0; font-size: 1.1rem; color: var(--text-color); font-weight: 600;">
+                Рабочее пространство создано командой B&G Agency
+            </p>
             <a href="https://bg-agency-usa.vercel.app/" target="_blank" class="agency-btn">
                 B&G AGENCY
             </a>
@@ -566,28 +573,22 @@
             }
         }
 
-        // НОВЫЙ СКРИПТ: Автоматическое расширение всех полей (textarea) под текст
+        // Автоматическое расширение всех полей (textarea) под текст
         function initAutoResize() {
             const textareas = document.querySelectorAll('textarea');
             
             textareas.forEach(textarea => {
-                // Функция подгонки размера
                 const resize = () => {
-                    // Учитываем толщину рамки (border)
                     const offset = textarea.offsetHeight - textarea.clientHeight; 
-                    textarea.style.height = 'auto'; // Сбрасываем высоту
-                    textarea.style.height = (textarea.scrollHeight + offset) + 'px'; // Выставляем по контенту
+                    textarea.style.height = 'auto'; 
+                    textarea.style.height = (textarea.scrollHeight + offset) + 'px'; 
                 };
                 
-                // Следим за каждым вводом текста
                 textarea.addEventListener('input', resize);
-                
-                // Вызываем один раз при загрузке (полезно, если обновить страницу и текст останется)
                 setTimeout(resize, 0);
             });
         }
 
-        // Запускаем скрипт, когда вся страница полностью загрузилась
         document.addEventListener('DOMContentLoaded', initAutoResize);
     </script>
 </body>
