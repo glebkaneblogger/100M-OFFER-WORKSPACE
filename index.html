@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Рабочее пространство: Оффер на $100M</title>
     <style>
-        /* Базовые темные стили (Dark Mode - теперь по умолчанию) */
+        /* Базовые темные стили (Dark Mode - по умолчанию) */
         :root {
             --bg-color: #0f172a;
             --text-color: #f8fafc;
@@ -47,7 +47,7 @@
             color: var(--text-color); 
             margin: 0; 
             padding: 40px 20px; 
-            /* Учет безопасных зон для iPhone (челка и нижняя полоса) */
+            /* Учет безопасных зон для iPhone */
             padding-top: max(40px, env(safe-area-inset-top));
             padding-bottom: max(40px, env(safe-area-inset-bottom));
             line-height: 1.6;
@@ -197,8 +197,8 @@
             justify-content: center;
         }
 
-        /* Оптимизация инпутов для мобильных */
-        input[type="text"], textarea {
+        /* Общие стили для ВСЕХ полей ввода (теперь это textarea для авторасширения) */
+        textarea {
             background-color: var(--input-bg);
             color: var(--text-color);
             padding: 12px 16px;
@@ -206,22 +206,26 @@
             border-radius: 6px;
             font-size: 16px; 
             font-family: inherit;
-            transition: all 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
             width: 100%;
-        }
-
-        input[type="text"] { 
-            max-width: 300px; 
-            text-align: center; 
+            resize: none; /* Убираем ползунок ручного изменения размера */
+            overflow: hidden; /* Скрываем скроллбар */
         }
         
-        input:focus, textarea:focus {
+        textarea:focus {
             border-color: var(--accent-green);
             outline: none;
             box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
         }
 
         ::placeholder { color: var(--placeholder-color); font-weight: 500; }
+
+        /* Специфичные настройки для полей формулы */
+        .formula-input { 
+            max-width: 300px; 
+            text-align: center; 
+            min-height: 54px; /* Начальная высота для 1 строки */
+        }
 
         .operator { font-size: 1.5rem; font-weight: 900; color: var(--accent-green); flex-shrink: 0; }
         .value-label { font-size: 2.2rem; font-weight: 900; color: var(--accent-green); white-space: nowrap; }
@@ -261,8 +265,7 @@
         }
 
         .question-item textarea {
-            height: 80px;
-            resize: vertical;
+            min-height: 80px;
         }
 
         /* Итоговая формулировка */
@@ -284,8 +287,7 @@
         }
 
         .draft-section textarea { 
-            height: 120px; 
-            resize: vertical; 
+            min-height: 120px; 
             margin-top: 15px; 
         }
 
@@ -375,8 +377,8 @@
                 flex-direction: column; 
             }
 
-            input[type="text"] { 
-                max-width: 100%; 
+            .formula-input { 
+                max-width: 100%; /* На мобилках поля тянутся на всю ширину */
             }
             
             .operator { 
@@ -409,13 +411,12 @@
                 <p style="font-size: 1.1rem; color: var(--placeholder-color); margin: 5px 0 0 0;">Рабочее пространство идеального предложения</p>
             </div>
             <div class="controls-group">
-                <!-- Кнопка теперь изначально предлагает включить светлую тему -->
                 <button id="themeToggleBtn" onclick="toggleTheme()">☀️ Светлая тема</button>
                 <button id="memoToggleBtn" onclick="toggleMemo()">📖 Открыть памятку</button>
             </div>
         </div>
 
-        <!-- ПАМЯТКА (Скрыта по умолчанию) -->
+        <!-- ПАМЯТКА -->
         <div id="memoSection">
             <div class="section">
                 <h2>Главные цитаты и принципы (Майндсет)</h2>
@@ -458,7 +459,7 @@
             </div>
         </div>
 
-        <!-- КОНСТРУКТОР (Открыт по умолчанию) -->
+        <!-- КОНСТРУКТОР -->
         <div id="constructorSection" class="section">
             
             <div class="formula-display">
@@ -479,17 +480,17 @@
                     <div class="fraction-container">
                         <!-- Числитель -->
                         <div class="input-row">
-                            <input type="text" placeholder="Размер изменений (Что получат?)">
+                            <textarea class="formula-input" rows="1" placeholder="Размер изменений (Что получат?)"></textarea>
                             <span class="operator">x</span>
-                            <input type="text" placeholder="Вероятность (Как докажете?)">
+                            <textarea class="formula-input" rows="1" placeholder="Вероятность (Как докажете?)"></textarea>
                         </div>
                         <!-- Линия дроби -->
                         <div class="fraction-line"></div>
                         <!-- Знаменатель -->
                         <div class="input-row">
-                            <input type="text" placeholder="Время (Как быстро?)">
+                            <textarea class="formula-input" rows="1" placeholder="Время (Как быстро?)"></textarea>
                             <span class="operator">+</span>
-                            <input type="text" placeholder="Усилия (Что нужно сделать?)">
+                            <textarea class="formula-input" rows="1" placeholder="Усилия (Что нужно сделать?)"></textarea>
                         </div>
                     </div>
                 </div>
@@ -497,7 +498,7 @@
                 <!-- ИТОГОВАЯ ФОРМУЛИРОВКА -->
                 <div class="draft-section">
                     <h2 style="color: var(--accent-green);">Итоговая формулировка оффера</h2>
-                    <textarea placeholder="Я помогу [кому] достичь [размер изменений] за [время] без [усилия], а гарантирует это [вероятность]..."></textarea>
+                    <textarea rows="1" placeholder="Я помогу [кому] достичь [размер изменений] за [время] без [усилия], а гарантирует это [вероятность]..."></textarea>
                 </div>
 
                 <!-- БЛОК С 4 ВОПРОСАМИ -->
@@ -506,22 +507,22 @@
                     
                     <div class="question-item">
                         <label><span class="number">1</span> Как увеличить субъективное восприятие размера изменений?</label>
-                        <textarea placeholder="Ваш ответ..."></textarea>
+                        <textarea rows="1" placeholder="Ваш ответ..."></textarea>
                     </div>
                     
                     <div class="question-item">
                         <label><span class="number">2</span> Как увеличить реальную вероятность достижения результата и ее субъективное восприятие клиентом?</label>
-                        <textarea placeholder="Ваш ответ..."></textarea>
+                        <textarea rows="1" placeholder="Ваш ответ..."></textarea>
                     </div>
 
                     <div class="question-item">
                         <label><span class="number">3</span> Как сократить время клиента до первых результатов?</label>
-                        <textarea placeholder="Ваш ответ..."></textarea>
+                        <textarea rows="1" placeholder="Ваш ответ..."></textarea>
                     </div>
 
                     <div class="question-item">
                         <label><span class="number">4</span> Как сократить реальные усилия клиента и его субъективное восприятие количества усилий?</label>
-                        <textarea placeholder="Ваш ответ..."></textarea>
+                        <textarea rows="1" placeholder="Ваш ответ..."></textarea>
                     </div>
                 </div>
             </div>
@@ -551,12 +552,11 @@
             }
         }
 
-        // Обновленная функция переключения темы
+        // Переключение темной/светлой темы
         function toggleTheme() {
             const body = document.body;
             const btn = document.getElementById('themeToggleBtn');
             
-            // Теперь мы переключаем класс 'light-mode'
             body.classList.toggle('light-mode');
             
             if (body.classList.contains('light-mode')) {
@@ -565,6 +565,30 @@
                 btn.textContent = '☀️ Светлая тема';
             }
         }
+
+        // НОВЫЙ СКРИПТ: Автоматическое расширение всех полей (textarea) под текст
+        function initAutoResize() {
+            const textareas = document.querySelectorAll('textarea');
+            
+            textareas.forEach(textarea => {
+                // Функция подгонки размера
+                const resize = () => {
+                    // Учитываем толщину рамки (border)
+                    const offset = textarea.offsetHeight - textarea.clientHeight; 
+                    textarea.style.height = 'auto'; // Сбрасываем высоту
+                    textarea.style.height = (textarea.scrollHeight + offset) + 'px'; // Выставляем по контенту
+                };
+                
+                // Следим за каждым вводом текста
+                textarea.addEventListener('input', resize);
+                
+                // Вызываем один раз при загрузке (полезно, если обновить страницу и текст останется)
+                setTimeout(resize, 0);
+            });
+        }
+
+        // Запускаем скрипт, когда вся страница полностью загрузилась
+        document.addEventListener('DOMContentLoaded', initAutoResize);
     </script>
 </body>
 </html>
