@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Рабочее пространство: Оффер на $100M</title>
     <style>
         /* Базовые светлые стили (Light Mode) */
@@ -37,17 +37,25 @@
             --divider: #334155;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             background-color: var(--bg-color); 
             color: var(--text-color); 
             margin: 0; 
             padding: 40px 20px; 
+            /* Учет безопасных зон для iPhone (челка и нижняя полоса) */
+            padding-top: max(40px, env(safe-area-inset-top));
+            padding-bottom: max(40px, env(safe-area-inset-bottom));
             line-height: 1.6;
             transition: background-color 0.3s, color 0.3s;
         }
 
         .container { 
+            width: 100%;
             max-width: 900px; 
             margin: 0 auto; 
             background: var(--container-bg); 
@@ -78,7 +86,7 @@
         h1 { 
             font-size: 2.5rem; 
             text-transform: uppercase; 
-            white-space: nowrap; /* Предотвращает перенос слов заголовочной строки при смене шрифтов/тем */
+            white-space: nowrap; 
         }
         
         .controls-group {
@@ -90,7 +98,7 @@
             background-color: var(--button-bg);
             color: var(--button-text);
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 1rem;
             font-weight: 700;
             border-radius: 6px;
@@ -104,7 +112,7 @@
         }
 
         h2 { font-size: 1.8rem; margin-top: 2rem; display: flex; align-items: center; gap: 10px; }
-        h2::before { content: ""; display: block; width: 6px; height: 1.8rem; background-color: var(--accent-green); }
+        h2::before { content: ""; display: block; width: 6px; height: 1.8rem; background-color: var(--accent-green); flex-shrink: 0; }
         h3 { font-size: 1.3rem; margin-top: 20px; }
         
         .highlight { color: var(--accent-green); }
@@ -116,7 +124,7 @@
 
         /* Памятка */
         #memoSection {
-            display: none; /* Скрыто по умолчанию */
+            display: none; 
             padding-bottom: 40px;
             border-bottom: 2px dashed var(--accent-border);
             margin-bottom: 40px;
@@ -133,7 +141,11 @@
         }
 
         .formula-display {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
             margin: 0 0 40px 0;
             padding: 20px;
             background: var(--container-bg);
@@ -141,6 +153,12 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
             transition: background-color 0.3s;
+        }
+
+        .formula-text {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
         }
 
         .formula-interactive {
@@ -157,6 +175,8 @@
             flex-direction: column;
             align-items: center;
             gap: 15px;
+            width: 100%;
+            max-width: 500px;
         }
 
         .fraction-line {
@@ -170,21 +190,27 @@
             display: flex;
             gap: 15px;
             align-items: center;
+            width: 100%;
+            justify-content: center;
         }
 
+        /* Оптимизация инпутов для мобильных (шрифт 16px предотвращает зум на iOS) */
         input[type="text"], textarea {
             background-color: var(--input-bg);
             color: var(--text-color);
             padding: 12px 16px;
             border: 2px solid var(--accent-border);
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 16px; 
             font-family: inherit;
             transition: all 0.2s;
-            box-sizing: border-box;
+            width: 100%;
         }
 
-        input[type="text"] { width: 300px; text-align: center; }
+        input[type="text"] { 
+            max-width: 300px; 
+            text-align: center; 
+        }
         
         input:focus, textarea:focus {
             border-color: var(--accent-green);
@@ -194,8 +220,8 @@
 
         ::placeholder { color: var(--placeholder-color); font-weight: 500; }
 
-        .operator { font-size: 1.5rem; font-weight: 900; color: var(--accent-green); }
-        .value-label { font-size: 2.2rem; font-weight: 900; color: var(--accent-green); }
+        .operator { font-size: 1.5rem; font-weight: 900; color: var(--accent-green); flex-shrink: 0; }
+        .value-label { font-size: 2.2rem; font-weight: 900; color: var(--accent-green); white-space: nowrap; }
 
         /* Блок 4 вопросов */
         .questions-block {
@@ -228,15 +254,15 @@
             border-radius: 4px;
             font-size: 0.9rem;
             margin-top: 2px;
+            flex-shrink: 0;
         }
 
         .question-item textarea {
-            width: 100%;
             height: 80px;
             resize: vertical;
         }
 
-        /* Итоговая формулировка (вынесена отдельно и теперь находится над вопросами) */
+        /* Итоговая формулировка */
         .draft-section {
             background: var(--container-bg);
             border: 2px solid var(--accent-green);
@@ -255,10 +281,8 @@
         }
 
         .draft-section textarea { 
-            width: 100%; 
             height: 120px; 
             resize: vertical; 
-            font-size: 1.1rem; 
             margin-top: 15px; 
         }
 
@@ -294,15 +318,80 @@
             transform: translateY(-2px);
         }
 
+        /* === МОБИЛЬНАЯ АДАПТАЦИЯ === */
         @media (max-width: 768px) {
-            .input-row { flex-direction: column; }
-            input[type="text"] { width: 100%; }
-            .formula-interactive { flex-direction: column; text-align: center; }
-            .operator { transform: rotate(90deg); margin: 5px 0; display: inline-block;}
-            .input-row .operator { transform: none; }
-            .header-controls { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .controls-group { width: 100%; justify-content: space-between; }
-            h1 { white-space: normal; }
+            body {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .container {
+                padding: 25px 20px;
+            }
+
+            .header-controls { 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 20px; 
+            }
+
+            h1 { 
+                font-size: 2rem; 
+                white-space: normal; /* Разрешаем перенос заголовка */
+                line-height: 1.1;
+            }
+            
+            .controls-group { 
+                width: 100%; 
+                flex-direction: column; /* Кнопки друг под другом */
+                gap: 12px; 
+            }
+
+            button {
+                width: 100%; /* Кнопки на всю ширину */
+            }
+
+            .builder-section {
+                padding: 25px 20px;
+            }
+
+            .formula-text {
+                font-size: 1.1rem;
+            }
+
+            .value-label {
+                font-size: 1.6rem;
+            }
+
+            .formula-interactive { 
+                flex-direction: column; 
+                text-align: center; 
+            }
+
+            .input-row { 
+                flex-direction: column; 
+            }
+
+            input[type="text"] { 
+                max-width: 100%; /* Инпуты на всю ширину внутри дроби */
+            }
+            
+            .operator { 
+                margin: 5px 0; 
+            }
+
+            .input-row .operator { 
+                transform: rotate(90deg); /* Поворачиваем знак умножения/сложения на мобильных */
+            }
+
+            .draft-section {
+                padding: 20px 15px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                line-height: 1.3;
+            }
         }
     </style>
 </head>
@@ -370,7 +459,7 @@
             
             <div class="formula-display">
                 <span class="value-label">Ценность = </span>
-                <div style="display: inline-block; vertical-align: middle; margin-left: 15px; text-align: center; font-size: 1.4rem; font-weight: bold;">
+                <div class="formula-text">
                     <div>Размер изменений &nbsp;<span class="highlight">x</span>&nbsp; Вероятность</div>
                     <div style="width: 100%; height: 3px; background-color: var(--text-color); margin: 10px 0; border-radius: 2px;"></div>
                     <div>Время &nbsp;<span class="highlight">+</span>&nbsp; Усилия</div>
@@ -401,7 +490,7 @@
                     </div>
                 </div>
 
-                <!-- ИТОГОВАЯ ФОРМУЛИРОВКА (Теперь перенесена НАД блоком из 4 вопросов) -->
+                <!-- ИТОГОВАЯ ФОРМУЛИРОВКА -->
                 <div class="draft-section">
                     <h2 style="color: var(--accent-green);">Итоговая формулировка оффера</h2>
                     <textarea placeholder="Я помогу [кому] достичь [размер изменений] за [время] без [усилия], а гарантирует это [вероятность]..."></textarea>
